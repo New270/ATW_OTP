@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Hệ thống Đăng nhập 2FA</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/contact.css">
+</head>
+<body>
+    <main class="app">
+        <section class="content">
+
+            <!-- HEADER ĐỒ ÁN NHÓM -->
+            <div class="project-header" style="text-align: center; margin-bottom: 35px;">
+                <div style="font-size: 48px; line-height: 1; text-shadow: 0 4px 15px rgba(40, 118, 95, 0.3);">🛡️</div>
+                <h3 style="color: #18332e; font-family: 'Playfair Display', serif; font-size: 20px; margin-top: 12px; font-weight: 700;">HỆ THỐNG XÁC THỰC 2FA</h3>
+                <p style="color: #71827e; font-size: 13px; font-weight: 500; margin-top: 4px; letter-spacing: 0.5px;">NHÓM 1 - AN TOÀN THÔNG TIN - PTIT</p>
+            </div>
+            
+            <!-- TRANG ĐĂNG NHẬP -->
+            <article id="login" class="page visible">
+                <h2>Đăng nhập</h2>
+                <p class="sub">Vui lòng đăng nhập để vào hệ thống</p>
+                <form id="loginForm">
+                    <label>
+                        Tài khoản
+                        <input id="loginContact" autocomplete="username" placeholder="Nhập email hoặc số điện thoại" required>
+                    </label>
+                    <label>
+                        Mật khẩu
+                        <input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••" required>
+                    </label>
+                    <p class="error" id="loginError"></p>
+                    <button type="submit" id="loginButton" class="wide">
+                        Đăng nhập <strong>→</strong>
+                    </button>
+                </form>
+                <p class="resend" style="margin-top: 25px;">
+                    Chưa có tài khoản? 
+                    <button id="goToSignup" type="button">Đăng ký ngay</button>
+                </p>
+            </article>
+
+            <!-- TRANG TẠO TÀI KHOẢN -->
+            <article id="signup" class="page">
+                <h2>Tạo tài khoản</h2>
+                <form id="signupForm">
+                    <label>
+                        Họ và tên
+                        <input id="name" autocomplete="name" placeholder="Họ và tên" required>
+                    </label>
+                    <label>
+                        Tài khoản
+                        <input id="contact" autocomplete="username" placeholder="Nhập email hoặc số điện thoại" required>
+                    </label>
+                    <label>
+                        Mật khẩu <small>Tối thiểu 8 ký tự</small>
+                        <input id="password" type="password" autocomplete="new-password" placeholder="••••••••" required minlength="8">
+                    </label>
+                    <label class="agree">
+                        <input id="terms" type="checkbox" required>
+                        <span></span>
+                        Tôi đồng ý với Điều khoản và Chính sách bảo mật.
+                    </label>
+                    <p class="error" id="signupError"></p>
+                    <button type="submit">
+                        Tiếp tục <strong>→</strong>
+                    </button>
+                </form>
+                <p class="resend" style="margin-top: 25px;">
+                    Đã có tài khoản? 
+                    <button id="goToLogin" type="button">Quay lại Đăng nhập</button>
+                </p>
+            </article>
+
+            <!-- TRANG CHỌN PHƯƠNG THỨC XÁC THỰC -->
+            <article id="method" class="page">
+                <button class="back" data-to="signup">← Quay lại</button>
+                <h2>Chọn cách xác thực</h2>
+                <div class="methods">
+                    <button id="emailMethod" class="method selected" data-method="email">
+                        <span class="icon">✉</span>
+                        <span>
+                            <b>Email</b>
+                            <small>Gửi mã đến email đăng ký</small>
+                        </span>
+                        <i></i>
+                    </button>
+                    <button id="smsMethod" class="method" data-method="sms">
+                        <span class="icon">⌁</span>
+                        <span>
+                            <b>Tin nhắn SMS</b>
+                            <small>Gửi mã đến số điện thoại</small>
+                        </span>
+                        <i></i>
+                    </button>
+                    <button class="method" data-method="app">
+                        <span class="icon">▦</span>
+                        <span>
+                            <b>Google Authenticator</b>
+                            <small>Quét QR, sau đó nhập mã 6 số</small>
+                        </span>
+                        <i></i>
+                    </button>
+                </div>
+                <button id="start" class="wide">
+                    Tạo tài khoản <strong>→</strong>
+                </button>
+            </article>
+
+            <!-- TRANG NHẬP MÃ OTP -->
+            <article id="verify" class="page">
+                <h2 id="verifyTitle">Nhập mã bảo mật</h2>
+                <p id="verifySub" class="sub"></p>
+                
+                <div id="qrArea" class="qr-area">
+                    <div class="qr-card">
+                        <img id="qr" alt="Mã QR Google Authenticator">
+                    </div>
+                    <div class="waiting">
+                        <i></i>
+                        Mở Google Authenticator, quét mã để thiết lập.
+                    </div>
+                </div>
+                
+                <div id="otp" class="otp">
+                    <input maxlength="1" inputmode="numeric" autofocus>
+                    <input maxlength="1" inputmode="numeric">
+                    <input maxlength="1" inputmode="numeric">
+                    <em></em>
+                    <input maxlength="1" inputmode="numeric">
+                    <input maxlength="1" inputmode="numeric">
+                    <input maxlength="1" inputmode="numeric">
+                </div>
+                
+                <button id="confirm" class="wide">
+                    Xác nhận <strong>→</strong>
+                </button>
+                <p id="resend" class="resend">
+                    Chưa nhận được mã?
+                    <button>Gửi lại</button>
+                </p>
+            </article>
+
+            <!-- TRANG HOÀN TẤT -->
+            <article id="done" class="page done">
+                <div class="tick">✓</div>
+                <p class="eyebrow">HOÀN TẤT</p>
+                <h2>Mọi thứ đã sẵn sàng.</h2>
+                <p class="sub">Tài khoản của bạn đã được xác thực an toàn.</p>
+                <button id="again" class="wide">
+                    Về trang chủ <strong>→</strong>
+                </button>
+            </article>
+            
+        </section>
+    </main>
+    <div id="toast" class="toast"></div>
+    <script src="/static/app.js"></script>
+</body>
+</html>
