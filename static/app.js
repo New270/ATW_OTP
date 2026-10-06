@@ -4,7 +4,7 @@ const method = document.getElementById("method");
 const verify = document.getElementById("verify");
 const done = document.getElementById("done");
 
-// Các phần tử Trang Đăng nhập (MỚI)
+// Các phần tử Trang Đăng nhập 
 const loginPage = document.getElementById("login");
 const loginForm = document.getElementById("loginForm");
 const loginContact = document.getElementById("loginContact");
@@ -76,7 +76,8 @@ function setButtonLoading(button, isLoading, text) {
     }
 }
 
-/* ================= GỌI BACKEND ================= */
+/* ================= HÀM GỌI API (FETCH) ================= */
+// Hàm dùng chung để gửi Request lên Server Python (Flask)
 async function requestAPI(url, options = {}) {
     const response = await fetch(url, {
         credentials: "same-origin",
@@ -95,7 +96,7 @@ async function requestAPI(url, options = {}) {
     return data;
 }
 
-/* ================= BƯỚC ĐĂNG NHẬP (LUỒNG MỚI) ================= */
+/* ================= BƯỚC ĐĂNG NHẬP  ================= */
 loginForm.addEventListener("submit", async function (event) {
     event.preventDefault();
     loginError.textContent = "";
